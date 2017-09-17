@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block title %}
+<title>社会工程学密码生成器-常用密码</title>
+{% endblock %}
+
+{% block content %}
+<div class="layui-col-md6">
+    <label class="layui-form-label">常用密码100</label>
+    <button class="layui-btn layui-btn-primary" onclick="copy('result')">复制</button>
+</div>
+<div class="layui-col-md6">
+    <label class="layui-form-label">常用密码1700</label>
+    <button class="layui-btn layui-btn-primary" onclick="copy('result2')">复制</button>
+</div>
+<div class="layui-col-md6">
+    <textarea id="result" class="layui-textarea result">{{ content100 }}</textarea>
+</div>
+<div class="layui-col-md6">
+    <textarea id="result2" class="layui-textarea result">{{ content1700 }}</textarea>
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="/static/js/common.js"></script>
+{% endblock %}

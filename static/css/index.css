@@ -1,0 +1,11 @@
+.result{
+    padding: 0 10px;
+}
+textarea{
+    height: 100%;
+    width: 100%;
+    min-height: 600px;
+}
+.layui-form-label{
+    width: 100px;
+}
