@@ -1,0 +1,2 @@
+# SocialEngineeringDictionaryGenerator
+社会工程学密码生成器，是一个利用个人信息生成密码的工具
