@@ -6,7 +6,7 @@ Social Engineering Dictionary Generator
 初步设想为：根据常见的个人信息，分别生成少量、中量、大量密码，以应付不同的需求。
 '''
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import string
 import re
 import itertools
@@ -14,7 +14,7 @@ import json
 import sys
 import os
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='')
 dirname = sys.path[0]
 
 
@@ -56,13 +56,12 @@ def dropStingInt(l, rtype):  # 去掉字母或数字
             r.append(i)
     return r
 
+@app.route('/',defaults={'path':''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
 
-@app.route("/", methods=["get"])
-def index():
-    return render_template('index.html')
-
-
-@app.route('/index/get', methods=["post"])
+@app.route('/api/getPassword', methods=["post"])
 def index_get():
     data = json.loads(request.data)
     # name
@@ -208,14 +207,13 @@ def index_get():
     return jsonify({"pass_first_all": '\n'.join(pass_first_all), "pass_second_all": '\n'.join(pass_second_all)})
 
 
-@app.route('/common', methods=['GET'])
+@app.route('/api/getCommon', methods=['post'])
 def common():
     with open(os.path.join(dirname, 'static', 'file', 'mypass100.txt'), 'r') as f:
         content100 = f.read()
     with open(os.path.join(dirname, 'static', 'file', 'csdn_1700.txt'), 'r') as f:
         content1700 = f.read()
-    return render_template('common.html', content100=content100, content1700=content1700)
-
+    return jsonify({'content100':content100,'content1700':content1700})
 if __name__ == "__main__":
     app.run(debug=False)
 

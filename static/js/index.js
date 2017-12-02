@@ -100,12 +100,12 @@ var app = new Vue({
                 if (this.result === '') {
                     this.result = '空';
                 }
-                $('#result').css('height', this.result.split('\n').length * 20.2 + 'px');
+                $('#result').css('height', this.result.split('\n').length * 20.3 + 'px');
                 this.result2 = response.body.pass_second_all;
                 if (this.result2 === '') {
                     this.result2 = '空';
                 }
-                $('#result2').css('height', this.result2.split('\n').length * 20.2 + 'px');
+                $('#result2').css('height', this.result2.split('\n').length * 20.3 + 'px');
                 // response => {
                 // console.log(response.body);
             });
