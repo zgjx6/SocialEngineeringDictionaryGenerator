@@ -7,6 +7,7 @@ Social Engineering Dictionary Generator
 '''
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask_compress import Compress
 import string
 import re
 import itertools
@@ -16,7 +17,7 @@ import os
 
 app = Flask(__name__,template_folder='')
 dirname = sys.path[0]
-
+Compress(app)
 
 def getLowAndUpStr(s):  # 得到字符串大小写，小于三位自动重复
     if not s:
