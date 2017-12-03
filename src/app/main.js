@@ -8,21 +8,8 @@ import axios from 'axios';
 
 // new WOW({live:false}).init();
 Vue.prototype.$http = axios;
-
 Vue.use(VueRouter);
 Vue.use(IView);
-
-if(DEVELOPMENT){
-    Vue.config.debug = true;
-    Vue.config.productionTip = true;
-}
-else{
-    Vue.config.debug = false;
-    Vue.config.productionTip = false;
-    Vue.config.silent = true;
-    Vue.config.devtools = false;
-    console.log(DEVELOPMENT);
-}
 
 import Util from './libs/util';
 import Routers from './route'

@@ -218,7 +218,7 @@ def common():
 if __name__ == "__main__":
     from flask_compress import Compress
     Compress(app)
-    app.run(debug=False)
+    app.run(debug=True)
 
 
 # 二阶密码优化

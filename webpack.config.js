@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const Env = process.env.NODE_ENV;
+const isDev = Env==='development';
 
 module.exports = {
     entry: { // pagesDir是前面准备好的入口文件集合目录的路径
@@ -38,9 +39,9 @@ module.exports = {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: [{loader: 'css-loader', options: {sourceMap: true}}, {
+                    use: [{loader: 'css-loader', options: {sourceMap: isDev}}, {
                         loader: 'postcss-loader',
-                        options: {sourceMap: true}
+                        options: {sourceMap: isDev}
                     }]
                 })
             },
@@ -63,19 +64,20 @@ module.exports = {
                         options: {
                             loaders: {
                                 css: ExtractTextPlugin.extract({
-                                    fallback: 'vue-style-loader',
                                     use: [{
                                         loader: 'css-loader',
-                                        options: {sourceMap: true}
-                                    }, {loader: 'postcss-loader', options: {sourceMap: true}}]
+                                        options: {sourceMap: isDev}
+                                    }, {loader: 'postcss-loader', options: {sourceMap: isDev}}],
+                                    fallback: 'vue-style-loader'
                                 })
-                            }
+                            },
+                            extractCSS: true
                         }
                     },
                     {
                         loader: 'iview-loader',
                         options: {
-                            prefix: true
+                            prefix: false
                         }
                     }
                 ]
@@ -94,7 +96,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(
-            ['build/static/js/*-*.js*', 'build/static/css/*-*.css*', 'build/*.hot-update.*', 'build/static/js/*.bundle.js*'],　 //匹配删除的文件
+            ['build/static/js/*', 'build/static/css/*', 'build/*.hot-update.*'],　 //匹配删除的文件
             {
                 root: __dirname,//根目录
                 verbose: true,//开启在控制台输出信息
@@ -106,14 +108,16 @@ module.exports = {
             filename: 'static/js/[name]1.js', //最后生成的文件名
             minChunks: 3
         }),
-        new ExtractTextPlugin("static/css/[name]-[hash].css")
+        new ExtractTextPlugin("static/css/[name]-[hash].css", {allChunks: true,})
     ]
 };
 if (Env === 'production') {
     // module.exports.devtool = '#source-map';
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
-            DEVELOPMENT: false
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
@@ -141,7 +145,9 @@ else {
     module.exports.devtool = '#cheap-module-source-map';
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
-            DEVELOPMENT: true
+            'process.env': {
+                NODE_ENV: '"development"'
+            }
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',

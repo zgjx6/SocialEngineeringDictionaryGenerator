@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack --watch",
+    "watch": "cross-env NODE_ENV=development webpack --watch --progress",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --inline",
     "test": "cross-env NODE_ENV=development webpack --progress",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
