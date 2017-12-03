@@ -1,1 +1,2 @@
 flask
+flask-compress
