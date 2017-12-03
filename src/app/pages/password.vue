@@ -1,8 +1,10 @@
 <template>
     <span v-if="password">
         <span>{{desc}}</span>
-        <Button type="primary" @click="copy">复制</Button>
-        <Input :value="password" type="textarea" :rows="rows" :placeholder="placeholder"></Input>
+        <Poptip content="已复制" v-model="visible">
+            <Button type="primary" @click="copy">复制</Button>
+        </Poptip>
+        <Input :value="password" type="textarea" :rows="rows" :placeholder="placeholder" ref="textnode"></Input>
     </span>
 </template>
 
@@ -12,7 +14,8 @@
         name: "password",
         data() {
             return {
-                placeholder: '密码'
+                placeholder: '密码',
+                visible:false
             }
         },
         props: ['password','desc'],
@@ -23,11 +26,12 @@
         },
         methods: {
             copy: function (event) {
-                var textParent=event.path[2].children[0]||event.path[2];
-                var textNode=textParent.children[1].children[0];
-                textNode.select(); // 选择对象
+                this.visible=true;
+                var textNode=this.$refs.textnode.$el.children[0];
+                textNode.select();
                 document.execCommand("Copy"); // 执行浏览器复制命令
                 textNode.blur();
+                setTimeout(()=>{this.visible=false},1000);
             }
         }
     }

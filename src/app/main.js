@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import IView from 'iview';
 import VueRouter from 'vue-router';
-import {WOW} from 'wowjs';
-import 'animate.css';
+// import {WOW} from 'wowjs';
+// import 'animate.css';
 import 'iview/dist/styles/iview.css';
 import axios from 'axios';
 
-new WOW({live:false}).init();
+// new WOW({live:false}).init();
 Vue.prototype.$http = axios;
 Vue.config.debug = false;
 Vue.config.productionTip = false;

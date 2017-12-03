@@ -170,13 +170,15 @@
         },
         methods: {
             emitData: function () {
-                console.log(this.formItem);
-                // this.formItem.birthday=this.format(this.formItem.birthday);
-                // this.formItem.birthday2=this.format(this.formItem.birthday2);
+                this.formItem.birthday=this.format(this.formItem.birthday);
+                this.formItem.birthday2=this.format(this.formItem.birthday2);
                 this.$emit('getData', this.formItem)
             },
             format:function (date) {
-                return date.getFullYear() + "-" + ((date.getMonth() + 1) < 10 ? "0" : "") + (date.getMonth() + 1) + "-" + (date.getDate() < 10 ? "0" : "") + date.getDate();
+                if (date){
+                    return date.getFullYear() + "-" + ((date.getMonth() + 1) < 10 ? "0" : "") + (date.getMonth() + 1) + "-" + (date.getDate() < 10 ? "0" : "") + date.getDate();
+                }
+                return ''
             }
         }
     }
