@@ -1,7 +1,7 @@
 <template>
     <Menu mode="horizontal" :theme="theme" active-name="1">
         <MenuItem name="1">
-            <router-link to="/index"><Avatar :src="psu"></Avatar></router-link>
+            <router-link to="/index"><Avatar :src="pass"></Avatar></router-link>
         </MenuItem>
         <MenuItem name="1">
             <router-link to="/index"><Icon type="home"></Icon>首页</router-link>
@@ -10,24 +10,27 @@
             <router-link to="/common"><Icon type="unlocked"></Icon>常用密码</router-link>
         </MenuItem>
         <MenuItem name="3">
-            <a href="https://github.com/zgjx/SocialEngineeringDictionaryGenerator/blob/master/README.md" target="_blank">
-                <Icon type="help-circled"></Icon>帮助
-            </a>
+            <router-link to="/readme"><Icon type="ios-paperplane"></Icon>说明</router-link>
         </MenuItem>
-        <MenuItem name="4">
-            <a href="https://github.com/zgjx/SocialEngineeringDictionaryGenerator/" target="_blank">
-                <Icon type="information-circled"></Icon>社会工程学密码生成器
-            </a>
-        </MenuItem>
+        <!--<MenuItem name="3">-->
+            <!--<a href="https://github.com/zgjx/SocialEngineeringDictionaryGenerator/blob/master/README.md" target="_blank">-->
+                <!--<Icon type="help-circled"></Icon>帮助-->
+            <!--</a>-->
+        <!--</MenuItem>-->
+        <!--<MenuItem name="4">-->
+            <!--<a href="https://github.com/zgjx/SocialEngineeringDictionaryGenerator/" target="_blank">-->
+                <!--<Icon type="information-circled"></Icon>社会工程学密码生成器-->
+            <!--</a>-->
+        <!--</MenuItem>-->
     </Menu>
 </template>
 <script>
-    import psu from '../static/imgs/psu.jpg'
+    import pass from '../static/imgs/pass.png'
     export default {
         data () {
             return {
                 theme: 'dark',
-                psu:psu
+                pass:pass
             }
         }
     }

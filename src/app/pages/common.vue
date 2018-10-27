@@ -2,11 +2,14 @@
     <div>
         <NavMenu></NavMenu>
         <Row>
-            <Col span="2" offset="1">
+            <Col span="3" offset="1">
             <PasswordArea :password="password100" desc="常用密码100"></PasswordArea>
             </Col>
-            <Col span="2" offset="1">
+            <Col span="3" offset="1">
             <PasswordArea :password="password1700" desc="常用密码1700"></PasswordArea>
+            </Col>
+            <Col span="3" offset="1">
+            <PasswordArea :password="password10000" desc="常用密码10000"></PasswordArea>
             </Col>
         </Row>
         <Spin size="large" fix v-if="spinShow"></Spin>
@@ -28,6 +31,7 @@
                 spinShow: false,
                 password100: '',
                 password1700: '',
+                password10000: ''
             }
         },
         mounted: function () {
@@ -39,6 +43,7 @@
                 this.$http.post('/api/getCommon', data).then(response => {
                     this.password100 = response.data.content100;
                     this.password1700 = response.data.content1700;
+                    this.password10000 = response.data.content10000;
                     this.spinShow = false;
                 }).catch(error => {
                     console.log(error);

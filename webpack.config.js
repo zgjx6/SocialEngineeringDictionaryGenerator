@@ -64,20 +64,12 @@ module.exports = {
                         options: {
                             loaders: {
                                 css: ExtractTextPlugin.extract({
-                                    use: [{
-                                        loader: 'css-loader',
-                                        options: {sourceMap: isDev}
-                                    }, {loader: 'postcss-loader', options: {sourceMap: isDev}}],
+                                    use: ['css-loader', 'postcss-loader'],
                                     fallback: 'vue-style-loader'
                                 })
                             },
-                            extractCSS: true
-                        }
-                    },
-                    {
-                        loader: 'iview-loader',
-                        options: {
-                            prefix: false
+                            extractCSS: true,
+                            sourceMap: isDev
                         }
                     }
                 ]
@@ -108,7 +100,7 @@ module.exports = {
             filename: 'static/js/[name]1.js', //最后生成的文件名
             minChunks: 3
         }),
-        new ExtractTextPlugin("static/css/[name]-[hash].css", {allChunks: true,})
+        new ExtractTextPlugin("static/css/[name]-[hash].css", {allChunks: true})
     ]
 };
 if (Env === 'production') {

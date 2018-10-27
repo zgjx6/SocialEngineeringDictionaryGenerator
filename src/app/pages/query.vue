@@ -89,24 +89,31 @@
                 </Col>
             </Row>
         </FormItem>
+        <FormItem label="连接符">
+            <Row>
+                <Col span="3">
+                <Input v-model="formItem.connector" placeholder="请输入连接符" type="text"></Input>
+                </Col>
+            </Row>
+        </FormItem>
         <FormItem label="过滤纯数字">
             <Row>
                 <Col span="1">
-                <Switch v-model="formItem.numberFilter"></Switch>
+                <i-switch v-model="formItem.numberFilter"></i-switch>
                 </Col>
             </Row>
         </FormItem>
         <FormItem label="过滤纯字母">
             <Row>
                 <Col span="1">
-                <Switch v-model="formItem.stringFilter"></Switch>
+                <i-switch v-model="formItem.stringFilter"></i-switch>
                 </Col>
             </Row>
         </FormItem>
         <FormItem label="过滤长度小于">
             <Row>
                 <Col span="1">
-                <Switch v-model="formItem.shortFilter"></Switch>
+                <i-switch v-model="formItem.shortFilter"></i-switch>
                 </Col>
                 <Col span="1">
                 <Input v-model="formItem.short" placeholder="请输入最小长度" type="text"></Input>
@@ -116,7 +123,7 @@
         <FormItem label="过滤长度大于">
             <Row>
                 <Col span="1">
-                <Switch v-model="formItem.longFilter"></Switch>
+                <i-switch v-model="formItem.longFilter"></i-switch>
                 </Col>
                 <Col span="1">
                 <Input v-model="formItem.long" placeholder="请输入最大长度" type="text"></Input>
@@ -158,7 +165,7 @@
                     thirdName2: '',
                     // birthday3:$('#birthday3').val(),
                     // birthday4:$('#birthday4').val(),
-                    connector: '',
+                    connector: '@#.-_~!?%&*+=$/|',
                     numberFilter: false,
                     stringFilter: false,
                     shortFilter: true,

@@ -1,6 +1,6 @@
 <template>
     <span v-if="password">
-        <span>{{desc}}</span>
+        <span>{{desc}}&nbsp;-&nbsp;{{password.split('\n').length}}个</span>
         <Poptip content="已复制" v-model="visible">
             <Button type="primary" @click="copy">复制</Button>
         </Poptip>
@@ -27,7 +27,7 @@
         methods: {
             copy: function (event) {
                 this.visible=true;
-                var textNode=this.$refs.textnode.$el.children[0];
+                let textNode = this.$refs.textnode.$el.children[0];
                 textNode.select();
                 document.execCommand("Copy"); // 执行浏览器复制命令
                 textNode.blur();
