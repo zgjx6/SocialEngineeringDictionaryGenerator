@@ -13,6 +13,7 @@ import itertools
 import json
 import sys
 import os
+import time
 
 app = Flask(__name__, template_folder='')
 dirname = sys.path[0]
@@ -147,11 +148,14 @@ def index_get():
     # metaBirthday = data.get('birthday3', '')
     # metaBirthday2 = data.get('birthday4', '')
     connector = data.get('connector', '')
-    common = list(map(str, range(10))) + ['a', 'z', 'q'] + ['11', '12', '01', 'qq', 'aa', 'zz', '00', '66', '88', '99',
-                                                            'ab', 'zx', 'az', 'qw', 'qa'] + ['123', '888', '666', '000', '111', 'aaa', 'abc', 'qaz', 'qwe', 'asd', 'zxc'] + ['1234','1qaz','qwer','asdf','zxcv','1357','2468','0123','6789']+['12345','123456']
+    # common = list(map(str, range(10))) + ['a', 'z', 'q'] + ['11', '12', '01', 'qq', 'aa', 'zz', '00', '66', '88', '99','ab', 'zx', 'az', 'qw', 'qa'] + ['123', '888', '666', '000', '111', 'aaa', 'abc', 'qaz', 'qwe', 'asd', 'zxc'] + ['1234','1qaz','qwer','asdf','zxcv','1357','2468','0123','6789']+['12345','123456']
+    common = data.get('common', '').split(',')
+    if data.get('haveYear', '') == True:
+        year = int(time.strftime("%Y"))
+        common += list(map(str,range(year-int(data.get('year', '1')),year+2)))
     # generate password
     pass_list_all = []
-    for i in [name_all, birthday_all, phone_all, idcard_all, workNo_all, other_all]:
+    for i in [name_all, birthday_all, phone_all, idcard_all, workNo_all, other_all, common]:
         t = []
         for j in i:
             t += distinctList(getLowAndUpStr(j))
@@ -169,7 +173,7 @@ def index_get():
     # 开始生成二阶和三阶密码
     pass_second_all, pass_third_all = [], []
     for i, j in enumerate(pass_list_all):
-        for k in pass_list_all[i + 1:]:
+        for k in pass_list_all[:i]+pass_list_all[i+1:]:
             pass_second_all += [''.join(m) for m in itertools.product(j, k)] + [''.join(m) for m in itertools.product(k, j)]
             pass_third_all += [''.join(m) for m in itertools.product(j, connector, k)] + [''.join(m) for m in itertools.product(k, connector, j)]
     short = int(short) if shortFilter == True and int(short) > 0 else 1    # 最小长度

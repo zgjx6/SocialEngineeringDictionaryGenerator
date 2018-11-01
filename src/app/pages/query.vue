@@ -71,7 +71,7 @@
         <FormItem label="短语">
             <Row>
                 <Col span="3">
-                <Input v-model="formItem.likeuse" placeholder="请输入常用短语(英文)" type="text"></Input>
+                <Input v-model="formItem.likeuse" placeholder="请输入常用短语(英文),如iloveyou" type="text"></Input>
                 </Col>
             </Row>
         </FormItem>
@@ -93,6 +93,23 @@
             <Row>
                 <Col span="3">
                 <Input v-model="formItem.connector" placeholder="请输入连接符" type="text"></Input>
+                </Col>
+            </Row>
+        </FormItem>
+        <FormItem label="常用词组">
+            <Row>
+                <Col span="15">
+                <Input v-model="formItem.common" placeholder="请输入常用词组,如123456,abcd等，多个用逗号分隔。后台会自动添加最近10年的年份" type="text"></Input>
+                </Col>
+            </Row>
+        </FormItem>
+        <FormItem label="最近年份">
+            <Row>
+                <Col span="1">
+                <i-switch v-model="formItem.haveYear"></i-switch>
+                </Col>
+                <Col span="1">
+                <Input v-model="formItem.year" placeholder="最近年份" type="text"></Input>
                 </Col>
             </Row>
         </FormItem>
@@ -155,23 +172,26 @@
                     qq: '',
                     organization: '',
                     company: '',
-                    password: '',
-                    password2: '',
+                    // password: '',
+                    // password2: '',
                     likeuse: '',
                     idcard: '',
                     workNo: '',
-                    firstName2: '',
-                    secondName2: '',
-                    thirdName2: '',
+                    // firstName2: '',
+                    // secondName2: '',
+                    // thirdName2: '',
                     // birthday3:$('#birthday3').val(),
                     // birthday4:$('#birthday4').val(),
                     connector: '@#.-_~!?%&*+=$/|',
+                    common:'0,1,2,3,4,5,6,7,8,9,a,z,q,11,12,01,qq,aa,zz,00,66,88,99,ab,zx,az,qw,qa,123,888,666,000,111,aaa,abc,qaz,qwe,asd,zxc,1234,1qaz,qwer,asdf,zxcv,1357,2468,0123,6789,12345,123456',
                     numberFilter: false,
                     stringFilter: false,
                     shortFilter: true,
                     longFilter: true,
                     short: '6',
-                    long: '16'
+                    long: '16',
+                    haveYear: true,
+                    year: '10'
                 }
             }
         },
