@@ -28,8 +28,8 @@ def getLowAndUpStr(s):  # 得到字符串大小写，小于三位自动重复
     return temp
 
 
-def distinctList(l):  # 列表去重
-    return list(set(l))
+def distinctList(l):  # 列表去重去空
+    return [i for i in list(set(l)) if i!='']
 
 
 def dropHeadTail(l, start=6, end=16):  # 列表去掉过长和过短
@@ -159,10 +159,12 @@ def index_get():
         t = []
         for j in i:
             t += distinctList(getLowAndUpStr(j))
-        pass_list_all.append(t)
+        pass_list_all.append(distinctList(t))
     pass_list_all.append(email_all)
-    pass_list_all.append(common)
+    pass_list_all =[i for i in pass_list_all if i!=[]]
+    # pass_list_all.append(common)
     pass_first_all = itertools.chain(*pass_list_all)
+
 
     numberFilter = data.get('numberFilter', '')
     stringFilter = data.get('stringFilter', '')
@@ -172,8 +174,10 @@ def index_get():
     _long = data.get('long', '')
     # 开始生成二阶和三阶密码
     pass_second_all, pass_third_all = [], []
+    print(pass_list_all)
     for i, j in enumerate(pass_list_all):
         for k in pass_list_all[:i]+pass_list_all[i+1:]:
+            # print(i,j,k)
             pass_second_all += [''.join(m) for m in itertools.product(j, k)] + [''.join(m) for m in itertools.product(k, j)]
             pass_third_all += [''.join(m) for m in itertools.product(j, connector, k)] + [''.join(m) for m in itertools.product(k, connector, j)]
     short = int(short) if shortFilter == True and int(short) > 0 else 1    # 最小长度
