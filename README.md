@@ -14,8 +14,7 @@
 
 为了安全起见，本程序不会记录任何日志，且代码开源于[我的Github。](https://github.com/zgjx6/SocialEngineeringDictionaryGenerator)
 
-最后再附一个发现的一个类型的网站 [http://www.bugku.com/mima](http://www.bugku.com/mima/)。
-
+最后再附一个发现的同一个类型的网站 [http://www.bugku.com/mima](http://www.bugku.com/mima/), 以及一个[密码字典](https://github.com/r35tart/RW_Password)。
 ## 网址
 [社会工程学密码生成器](http://xingchen.pythonanywhere.com)
 

@@ -40,10 +40,10 @@
         methods: {
             getCommon: function (data) {
                 this.spinShow = true;
-                this.$http.post('/api/getCommon', data).then(response => {
-                    this.password100 = response.data.content100;
-                    this.password1700 = response.data.content1700;
-                    this.password10000 = response.data.content10000;
+                this.$http.post('/api/get_common', data).then(response => {
+                    this.password100 = response.data['content100'];
+                    this.password1700 = response.data['content1700'];
+                    this.password10000 = response.data['content10000'];
                     this.spinShow = false;
                 }).catch(error => {
                     console.log(error);

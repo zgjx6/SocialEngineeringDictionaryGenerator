@@ -97,7 +97,7 @@ module.exports = {
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor', // 上面入口定义的节点组
-            filename: 'static/js/[name]1.js', //最后生成的文件名
+            filename: 'static/js/[name]-[hash].js', //最后生成的文件名
             minChunks: 3
         }),
         new ExtractTextPlugin("static/css/[name]-[hash].css", {allChunks: true})

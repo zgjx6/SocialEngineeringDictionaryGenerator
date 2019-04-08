@@ -1,10 +1,10 @@
 # coding:utf-8
-'''
+"""
 Social Engineering Dictionary Generator
 社会工程学字典生成器
 灵感源于亦思社会工程学字典生成器，但是该软件多年未更新，且生成的密码过少，故打算自己重新做一个。
 初步设想为：根据常见的个人信息，分别生成少量、中量、大量密码，以应付不同的需求。
-'''
+"""
 
 from flask import Flask, render_template, request, jsonify
 
@@ -19,197 +19,196 @@ app = Flask(__name__, template_folder='')
 dirname = sys.path[0]
 
 
-def getLowAndUpStr(s):  # 得到字符串大小写，小于三位自动重复
-    if not s:
-        return ['']
-    temp = [s.lower(), s.upper(), s.capitalize()]
-    if 0 < len(s) < 4 or (len(s) == 4 and s.lower()[0:2] != s.lower()[2:]):
-        temp += getLowAndUpStr(s * 2)
-    return temp
+def get_low_and_up_str(l: list) -> list:
+    """
+    得到字符串大小写，
+    :param l: list, 需要处理的字符串列表
+    :return: 处理后的字符串列表,不包含原文
+    """
+    return [j for i in l if i for j in [i.lower(), i.upper()]]
 
 
-def distinctList(l):  # 列表去重去空
-    return [i for i in list(set(l)) if i!='']
+def get_repeat(l: list, x: int=3) -> list:
+    """
+    小于x位自动重复
+    :param l: list,需要重复的列表
+    :param x: int,小于等于此长度将自动重复
+    :return: 返回原文及重复后的列表组合
+    """
+    return l + [i*2 for i in l if 0 < len(i) <= x]
 
 
-def dropHeadTail(l, start=6, end=16):  # 列表去掉过长和过短
+def get_capitalize(l: list) -> list:
+    """
+    :param l: list, 密码列表
+    :return: 原密码，首字母大写，最后字符大写
+    """
+    return [j for i in l if i for j in [i, i.capitalize(), i[:-1]+i[-1].upper()]]
+
+
+def get_head_tail(s: str, *l: int) -> list:
+    """
+    取密码前几位，后几位，可输入任意长度
+    :param s: str, 需要处理的字符串
+    :return: 计算后的密码列表,不包含原文
+    """
+    return [j for i in l if len(s) > i for j in [s[:i], s[-i:]]]
+
+
+def distinct_list(l: list) -> list:
+    """
+    :param l: list, 密码列表
+    :return: 去重去空后的列表
+    """
+    return [i for i in list(set(l)) if i]
+
+
+def drop_short_long(l: list, start: int=6, end: int=16) -> list:
+    """
+    列表去掉过长和过短
+    :param l: list, 密码列表
+    :param start: 最小长度
+    :param end: 最大长度
+    :return: 去掉过长和过短后的密码列表
+    """
     return [x for x in l if start <= len(x) <= end]
 
 
-def dropStingInt(l, rtype):  # 去掉字母或数字
-    r = []
-    for i in l:
-        if rtype == 'str':
-            pattern = '^[a-zA-Z]*$'
-        elif rtype == 'int':
-            pattern = '^[0-9]*$'
-        else:
-            return l
-        if re.match(pattern, i) == None:
-            r.append(i)
-    return r
+def drop_sting_int(l: list, rtype: str) -> list:
+    """
+    去掉纯字母或纯数字
+    :param l: list, 密码列表
+    :param rtype: 可选str或int
+    :return: 去掉纯字母或纯数字密码列表
+    """
+    if rtype not in ['str', 'int']:
+        return l
+    pattern = '^[a-zA-Z]*$' if rtype == 'str' else '^[0-9]*$'
+    return [i for i in l if re.match(pattern, i) is None]
 
 
 # SPA，单页面应用
-@app.route('/',defaults={'path':''})
+@app.route('/', defaults={'path' : ''})
 @app.route('/<path:path>')
 def catch_all(path):
     return render_template("index.html")
 
-@app.route('/api/getPassword', methods=["post"])
+
+@app.route('/api/get_password', methods=["post"])
 def index_get():
     data = json.loads(request.data)
     # name
-    firstName = data.get('firstName', '')
-    firstNameCombine = getLowAndUpStr(firstName) if re.match('^[a-zA-Z]*$', firstName) != None else ['']
-    lastName = [data.get('secondName', ''), data.get('thirdName', '')]
-    lastNameCombine = getLowAndUpStr(''.join(lastName)) if re.match('^[a-zA-Z]*$', ''.join(lastName)) != None else ['']
-    name_all = [''.join(firstNameCombine[0] + lastNameCombine[0])] + [''.join(lastNameCombine[0] + firstNameCombine[0])]
-    lastNameAB = lastName[0][0:1] + lastName[1][0:1]
-    for i in [firstName[0:1] + lastNameAB, firstNameCombine[0] + lastNameAB, lastNameAB + firstName[0:1], lastNameAB + firstNameCombine[0], firstName[0:1] + ''.join(lastName)]:
+    first_name = data.get('first_name', '')
+    first_name_combine = get_repeat(get_low_and_up_str([first_name])) if re.match('^[a-zA-Z0-9]+$', first_name) else ['']
+    last_name = [data.get('second_name', ''), data.get('third_name', '')]
+    last_name_combine = get_repeat(get_low_and_up_str([''.join(last_name)])) if re.match('^[a-zA-Z0-9]+$',
+                                                                                         ''.join(last_name)) else ['']
+    name_combine = (first_name_combine[0], last_name_combine[0])
+    name_all = [''.join(name_combine), ''.join(name_combine[::-1])]
+    last_name_a_b = last_name[0][0:1] + last_name[1][0:1]
+    for i in [first_name[0:1] + last_name_a_b, first_name_combine[0] + last_name_a_b, last_name_a_b + first_name[0:1],
+              last_name_a_b + first_name_combine[0], first_name[0:1] + ''.join(last_name), ''.join(last_name),
+              first_name]:
         name_all += [i]
-    name_all += [''.join(lastName), firstName]
     # birthday
-    birthday = data.get('birthday', '')
-    birthday2 = data.get('birthday2', '')
-    birthday_all = []
+    birthday, birthday2, birthday_all = data.get('birthday', ''), data.get('birthday2', ''), []
     for i in [birthday, birthday2]:
-        if re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', i) != None:
+        if re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', i):
             i = i.replace('-', '')
-            birthday_all.append(i)
-            birthday_all.append(i[:4])
-            birthday_all.append(i[-4:])
+            birthday_all += [i] + get_head_tail(i, 4)
             if i[4] == '0':
-                birthday_all.append(i[-3:])
-    # print('birthday_all',birthday_all)
+                birthday_all += [i[-3:], i[-3:] * 2]
     # email
-    email = data.get('email', '')
-    email_all = []
-    if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email) != None:
+    email, email_all = data.get('email', ''), []
+    if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email):
         email_all.append(email.split('@')[0])
-        # email_all.append(email.split('@')[1])
-        # email_all.append(email.split('@')[1].replace('.', ''))
-        # email_all.append(email.split('@')[1].split('.')[0])
-    # print('email_all',email_all)
-    # telephone
+        email_all += get_repeat(get_head_tail(email.split('@')[0], 3, 4))
+    # phone
     telephone = data.get('telephone', '')
-    mobilephone = data.get('mobilephone', '')
+    mobile = data.get('mobile', '')
     phone_all = []
-    for i in [telephone, mobilephone]:
-        if re.match('^[0-9-]*$', i) != None:
-            phone_all += i.split('-')
-            phone_all += [''.join(i.split('-'))]
-            phone_all.append(i)
-            phone_all.append(i[-6:])
-            phone_all.append(i[-4:])
-            phone_all.append(i[-3:])
+    for i in [telephone, mobile]:
+        if re.match('^[0-9-]+$', i):
+            phone_all += i.split('-') + [''.join(i.split('-')), i]
+            phone_all += get_repeat(get_head_tail(i, 3, 4, 5, 6))
     # other
-    userName = data.get('userName', '')
+    user_name = data.get('user_name', '')
     account = data.get('account', '')
-    qq = data.get('qq', '') if re.match('^[0-9]{5,13}$', data.get('qq', '')) != None else ''
-    organization = data.get('organization', '') if re.match(
-        '^[0-9a-zA-Z@./ -]*$', data.get('organization', '')) != None else ''
-    company = data.get('company', '') if re.match('^[0-9a-zA-Z@./ -]*$', data.get('company', '')) != None else ''
+    qq = data.get('qq', '') if re.match('^[0-9]{5,13}$', data.get('qq', '')) else ''
+    organization = data.get('organization', '') if re.match('^[0-9a-zA-Z@./ -]+$', data.get('organization', '')) else ''
+    company = data.get('company', '') if re.match('^[0-9a-zA-Z@./ -]+$', data.get('company', '')) else ''
     # password = data.get('password', '')
     # password1=data.get('password1', '')
     # password2 = data.get('password2', '')
-    likeuse = data.get('likeuse', '')
-    other = ''
-    other_all = [userName, account, qq, organization, company, likeuse, other]
-    # print('other_all',other_all)
-    # idcard
-    idcard = data.get('idcard', '') if re.match(r'(^\d{15}$)|(^\d{17}(x|X|\d)$|^$)', data.get('idcard', '')) != None else ''
-    idcard_all = []
-    if idcard:
-        if len(idcard) == 18:
-            idcard_all.append(idcard[-8:])
-            idcard_all.append(idcard[-6:])
-            idcard_all.append(idcard[-4:])
-            idcard_all.append(idcard[-3:])
-            idcard_all.append(idcard[-9:-1])
-            idcard_all.append(idcard[-7:-1])
-            idcard_all.append(idcard[-5:-1])
-            idcard_all.append(idcard[-4:-1])
-    # workNo
-    workNo = data.get('workNo', '') if re.match('^[0-9a-zA-Z@./ -]*$', data.get('workNo', '')) != None else ''
-    workNo_all = [workNo]
-    if workNo:
-        if len(workNo) >= 3:
-            workNo_all.append(workNo[-3:])
-        if len(workNo) >= 4:
-            workNo_all.append(workNo[-4:])
-        if len(workNo) >= 6:
-            workNo_all.append(workNo[-6:])
-        if len(workNo) >= 8:
-            workNo_all.append(workNo[-8:])
+    like_use = data.get('like_use', '')
+    other = data.get('other', '')
+    other_all = [user_name, account, qq, organization, company, like_use, other]
+    other_all += [j for i in other_all for j in get_repeat(get_head_tail(i, 3, 4))]
+    # id_card
+    id_card = data.get('id_card', '') if re.match(r'(^\d{15}$)|(^\d{17}(x|X|\d)$|^$)', data.get('id_card', '')) else ''
+    id_card_all = [] if len(id_card) != 18 else distinct_list(get_repeat(get_head_tail(id_card, 3, 4, 6, 8)) +
+                                                              get_repeat(get_head_tail(id_card[:-1], 3, 4, 6, 8)))
+    # work_no
+    work_no = data.get('work_no', '') if re.match('^[0-9a-zA-Z@./ -]+$', data.get('work_no', '')) else ''
+    work_no_all = get_repeat(get_head_tail(work_no, 3, 4, 6, 8))
     # second person
     # metaFirstName = data.get('firstName2', '')
     # mateLastName = [data.get('secondName2', ''), data.get('thirdName2', '')]
     # metaBirthday = data.get('birthday3', '')
     # metaBirthday2 = data.get('birthday4', '')
     connector = data.get('connector', '')
-    # common = list(map(str, range(10))) + ['a', 'z', 'q'] + ['11', '12', '01', 'qq', 'aa', 'zz', '00', '66', '88', '99','ab', 'zx', 'az', 'qw', 'qa'] + ['123', '888', '666', '000', '111', 'aaa', 'abc', 'qaz', 'qwe', 'asd', 'zxc'] + ['1234','1qaz','qwer','asdf','zxcv','1357','2468','0123','6789']+['12345','123456']
+    # common = list(map(str, range(10))) + ['a', 'z', 'q'] + ['11', '12', '01', 'qq', 'aa', 'zz', '00', '66', '88',
+    # '99','ab', 'zx', 'az', 'qw', 'qa'] + ['123', '888', '666', '000', '111', 'aaa', 'abc', 'qaz', 'qwe', 'asd', 'zxc']
+    #  + ['1234','1qaz','qwer','asdf','zxcv','1357','2468','0123','6789']+['12345','123456']
     common = data.get('common', '').split(',')
-    if data.get('haveYear', '') == True:
+    if data.get('have_year', ''):
         year = int(time.strftime("%Y"))
-        common += list(map(str,range(year-int(data.get('year', '1')),year+2)))
+        common += list(map(str, range(year-int(data.get('year', '1')), year + 2)))
     # generate password
-    pass_list_all = []
-    for i in [name_all, birthday_all, phone_all, idcard_all, workNo_all, other_all, common]:
-        t = []
-        for j in i:
-            t += distinctList(getLowAndUpStr(j))
-        pass_list_all.append(distinctList(t))
-    pass_list_all.append(email_all)
-    pass_list_all =[i for i in pass_list_all if i!=[]]
-    # pass_list_all.append(common)
-    pass_first_all = itertools.chain(*pass_list_all)
-
-
-    numberFilter = data.get('numberFilter', '')
-    stringFilter = data.get('stringFilter', '')
-    shortFilter = data.get('shortFilter', '')
-    longFilter = data.get('longFilter', '')
-    short = data.get('short', '')
-    _long = data.get('long', '')
-    # 开始生成二阶和三阶密码
-    pass_second_all, pass_third_all = [], []
+    name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common = \
+        [distinct_list(i) for i in
+         [name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common]]
+    pass_list_all = [name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common]
+    pass_first = list(itertools.chain(*pass_list_all))
     print(pass_list_all)
+    number_filter = data.get('number_filter', '')
+    string_filter = data.get('string_filter', '')
+    short_filter = data.get('short_filter', '')
+    long_filter = data.get('long_filter', '')
+    short = data.get('short', '')
+    long = data.get('long', '')
+    # 开始生成二阶和三阶密码
+    pass_second, pass_third = [], []
     for i, j in enumerate(pass_list_all):
-        for k in pass_list_all[:i]+pass_list_all[i+1:]:
-            # print(i,j,k)
-            pass_second_all += [''.join(m) for m in itertools.product(j, k)] + [''.join(m) for m in itertools.product(k, j)]
-            pass_third_all += [''.join(m) for m in itertools.product(j, connector, k)] + [''.join(m) for m in itertools.product(k, connector, j)]
-    short = int(short) if shortFilter == True and int(short) > 0 else 1    # 最小长度
-    _long = int(_long) if longFilter == True and int(_long) > 0 else 100    # 最大长度
-
-    pass_first_all = distinctList(pass_first_all)
-    pass_first_all = dropHeadTail(pass_first_all, start=short, end=_long)
-    pass_second_all = distinctList(pass_second_all)
-    pass_second_all = dropHeadTail(pass_second_all, start=short, end=_long)
-    pass_third_all = distinctList(pass_third_all)
-    pass_third_all = dropHeadTail(pass_third_all, start=short, end=_long)
-    if numberFilter == True:
-        pass_first_all = dropStingInt(pass_first_all, 'int')
-        pass_second_all = dropStingInt(pass_second_all, 'int')
-        pass_third_all = dropStingInt(pass_third_all, 'int')
-    if stringFilter == True:
-        pass_first_all = dropStingInt(pass_first_all, 'str')
-        pass_second_all = dropStingInt(pass_second_all, 'str')
-        pass_third_all = dropStingInt(pass_third_all, 'str')
-
-    return jsonify({"pass_first_all": '\n'.join(pass_first_all), "pass_second_all": '\n'.join(pass_second_all), "pass_third_all": '\n'.join(pass_third_all)})
+        if connector:
+            pass_third += [''.join(m) for m in itertools.product(j, connector, j)]
+        for k in pass_list_all[:i] + pass_list_all[i+1:]:
+            pass_second += [''.join(m) for m in itertools.product(j, k)]
+            if connector:
+                pass_third += [''.join(m) for m in itertools.product(j, connector, k)]
+    pass_second += [''.join(m) for m in itertools.product(other_all, other_all)]
+    # 过滤长度和纯字符、纯数字
+    short = int(short) if short_filter and int(short) > 0 else 3    # 最小长度
+    long = int(long) if long_filter and int(long) > 0 else 32    # 最大长度
+    pass_first, pass_second, pass_third = [drop_short_long(distinct_list(get_capitalize(i)), start=short, end=long)
+                                           for i in [pass_first, pass_second, pass_third]]
+    if number_filter:
+        pass_first, pass_second, pass_third = [drop_sting_int(i, 'int') for i in [pass_first, pass_second, pass_third]]
+    if string_filter:
+        pass_first, pass_second, pass_third = [drop_sting_int(i, 'str') for i in [pass_first, pass_second, pass_third]]
+    return jsonify({"pass_first": '\n'.join(pass_first), "pass_second": '\n'.join(pass_second),
+                    "pass_third": '\n'.join(pass_third)})
 
 
-@app.route('/api/getCommon', methods=['post'])
-def getCommon():
+@app.route('/api/get_common', methods=['post'])
+def get_common():
     with open(os.path.join(dirname, 'static', 'file', 'mypass100.txt'), 'r') as f:
         content100 = f.read()
     with open(os.path.join(dirname, 'static', 'file', 'csdn_1700.txt'), 'r') as f:
         content1700 = f.read()
     with open(os.path.join(dirname, 'static', 'file', '10000pass.txt'), 'r') as f:
         content10000 = f.read()
-    return jsonify({'content100':content100,'content1700':content1700,'content10000':content10000})
+    return jsonify({'content100': content100, 'content1700': content1700, 'content10000': content10000})
 
 
 if __name__ == "__main__":
@@ -221,6 +220,4 @@ if __name__ == "__main__":
 # TODO:网址
 # TODO:旧密码
 # TODO:第二人名字
-# TODO:Sanic,全异步
-
 

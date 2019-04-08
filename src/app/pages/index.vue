@@ -1,13 +1,14 @@
 <template>
     <div>
         <nav-menu></nav-menu>
-        <QueryForm v-on:getData="getData"></QueryForm>
+        <QueryForm v-on:get_data="get_data"></QueryForm>
         <Row>
             <Col span="3" offset="1"><PasswordArea :password="password1" desc="一阶密码"></PasswordArea></Col>
             <Col span="3" offset="1"><PasswordArea :password="password2" desc="二阶密码"></PasswordArea></Col>
             <Col span="3" offset="1"><PasswordArea :password="password3" desc="三阶密码"></PasswordArea></Col>
+            <Col span="3" offset="1"><PasswordArea :password="password4" desc="全部密码"></PasswordArea></Col>
         </Row>
-        <Spin size="large" fix v-if="spinShow"></Spin>
+        <!--<Spin size="large" fix v-if="spinShow"></Spin>-->
     </div>
 </template>
 
@@ -23,26 +24,34 @@
         },
         data(){
             return{
-                spinShow:false,
+                // spinShow:false,
                 password1:'',
                 password2:'',
                 password3:''
             }
         },
+        computed: {
+            password4: function () {
+                return this.password1.concat(this.password2).concat(this.password3)
+            }
+        },
         methods:{
-            getData:function (data){
-                this.spinShow=true;
-                this.$http.post('/api/getPassword', data).then(response=> {
-                    this.password1=response.data.pass_first_all;
-                    this.password2=response.data.pass_second_all;
-                    this.password3=response.data.pass_third_all;
-                    this.spinShow=false;
+            get_data:function (data){
+                // this.spinShow=true
+                this.$Spin.show();
+                this.$http.post('/api/get_password', data).then(response=> {
+                    this.password1=response.data['pass_first'];
+                    this.password2=response.data['pass_second'];
+                    this.password3=response.data['pass_third'];
+                    // this.spinShow=false;
+                    this.$Spin.hide();
                 }).catch(error=> {
                     this.password1='';
                     this.password2='';
                     this.password3='';
                     console.log(error);
-                    this.spinShow=false
+                    // this.spinShow=false
+                    this.$Spin.hide();
                 });
             }
         }
