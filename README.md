@@ -8,13 +8,13 @@
 组合共分三阶：
 一阶密码：仅根据一项个人信息生成的密码；
 二阶密码：根据两项个人信息组合生成的密码；
-三阶密码：由于部分人喜欢在两项个人信息中间加入一个特殊符号，以加强密码复杂度和强度，为了包含这种情况，故根据两项个人信息以及一个常用的连接符号（默认：pre@#.-_~!?%&*+=$/|）生成三阶密码。
+三阶密码：由于部分人喜欢在两项个人信息中间加入一个特殊符号，以加强密码复杂度和强度，为了包含这种情况，故根据两项个人信息以及一个常用的连接符号（默认：@#.-_~!?%&*+=$/|）生成三阶密码。
 
 除了社会工程学密码以外，还提供了一些常用的弱密码（top100，csdn-top1700，常用10000，更多密码字典可自行搜索），两者结合可以大幅提高密码破解概率。
 
-为了安全起见，本程序不会记录任何日志，且代码开源于[我的Github。](https://github.com/zgjx6/SocialEngineeringDictionaryGenerator)
+为了安全起见，本程序不会记录任何日志，且代码开源于[我的Github](https://github.com/zgjx6/SocialEngineeringDictionaryGenerator)。
 
-最后再附一个发现的同一个类型的网站 [http://www.bugku.com/mima](http://www.bugku.com/mima/), 以及一个[密码字典](https://github.com/r35tart/RW_Password)。
+最后再附一个发现的同一个类型的网站 [http://www.bugku.com/mima](http://www.bugku.com/mima/), 以及[密码字典](https://github.com/r35tart/RW_Password)、[字典超超超全](https://pan.baidu.com/s/1PXkEo-Mk6AiFIBUUXhvhVg)-提取码:`tz2a`。
 ## 网址
 [社会工程学密码生成器](http://xingchen.pythonanywhere.com)
 

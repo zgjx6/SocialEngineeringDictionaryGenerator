@@ -48,8 +48,9 @@ def get_capitalize(l: list) -> list:
 
 def get_head_tail(s: str, *l: int) -> list:
     """
-    取密码前几位，后几位，可输入任意长度
+    取密码前几位及后几位，可输入任意长度
     :param s: str, 需要处理的字符串
+    :param *l: int, 需要的长度
     :return: 计算后的密码列表,不包含原文
     """
     return [j for i in l if len(s) > i for j in [s[:i], s[-i:]]]
@@ -101,8 +102,7 @@ def index_get():
     first_name = data.get('first_name', '')
     first_name_combine = get_repeat(get_low_and_up_str([first_name])) if re.match('^[a-zA-Z0-9]+$', first_name) else ['']
     last_name = [data.get('second_name', ''), data.get('third_name', '')]
-    last_name_combine = get_repeat(get_low_and_up_str([''.join(last_name)])) if re.match('^[a-zA-Z0-9]+$',
-                                                                                         ''.join(last_name)) else ['']
+    last_name_combine = get_repeat(get_low_and_up_str([''.join(last_name)])) if re.match('^[a-zA-Z0-9]+$', ''.join(last_name)) else ['']
     name_combine = (first_name_combine[0], last_name_combine[0])
     name_all = [''.join(name_combine), ''.join(name_combine[::-1])]
     last_name_a_b = last_name[0][0:1] + last_name[1][0:1]
@@ -170,7 +170,7 @@ def index_get():
          [name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common]]
     pass_list_all = [name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common]
     pass_first = list(itertools.chain(*pass_list_all))
-    print(pass_list_all)
+    # print(pass_list_all)
     number_filter = data.get('number_filter', '')
     string_filter = data.get('string_filter', '')
     short_filter = data.get('short_filter', '')
