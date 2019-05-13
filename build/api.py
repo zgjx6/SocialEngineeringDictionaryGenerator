@@ -208,7 +208,9 @@ def get_common():
         content1700 = f.read()
     with open(os.path.join(dirname, 'static', 'file', '10000pass.txt'), 'r') as f:
         content10000 = f.read()
-    return jsonify({'content100': content100, 'content1700': content1700, 'content10000': content10000})
+    with open(os.path.join(dirname, 'static', 'file', 'NCSC_PwnedPasswordTop100k.txt'), 'r', encoding='utf8') as f:
+        NCSC100k = f.read()
+    return jsonify({'content100': content100, 'content1700': content1700, 'content10000': content10000, 'NCSC100k': NCSC100k})
 
 
 if __name__ == "__main__":
