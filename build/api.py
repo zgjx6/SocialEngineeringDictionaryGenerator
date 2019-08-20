@@ -41,9 +41,9 @@ def get_repeat(l: list, x: int=3) -> list:
 def get_capitalize(l: list) -> list:
     """
     :param l: list, 密码列表
-    :return: 原密码，首字母大写，最后字符大写
+    :return: 原密码，首字母大写，# 最后字符大写
     """
-    return [j for i in l if i for j in [i, i.capitalize(), i[:-1]+i[-1].upper()]]
+    return [j for i in l if i for j in [i, i.capitalize()]] # i[:-1]+i[-1].upper()
 
 
 def get_head_tail(s: str, *l: int) -> list:
