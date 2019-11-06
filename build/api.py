@@ -28,9 +28,9 @@ def get_low_and_up_str(l: list) -> list:
     return [j for i in l if i for j in [i.lower(), i.upper()]]
 
 
-def get_repeat(l: list, x: int=3) -> list:
+def get_repeat(l: list, x: int = 3) -> list:
     """
-    小于x位自动重复
+    小于等于x位自动重复
     :param l: list,需要重复的列表
     :param x: int,小于等于此长度将自动重复
     :return: 返回原文及重复后的列表组合
@@ -61,10 +61,10 @@ def distinct_list(l: list) -> list:
     :param l: list, 密码列表
     :return: 去重去空后的列表
     """
-    return [i for i in list(set(l)) if i]
+    return [i for i in set(l) if i]
 
 
-def drop_short_long(l: list, start: int=6, end: int=16) -> list:
+def drop_short_long(l: list, start: int = 6, end: int = 16) -> list:
     """
     列表去掉过长和过短
     :param l: list, 密码列表
@@ -88,17 +88,14 @@ def drop_sting_int(l: list, rtype: str) -> list:
     return [i for i in l if re.match(pattern, i) is None]
 
 
-# SPA，单页面应用
-@app.route('/', defaults={'path' : ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template("index.html")
-
-
-@app.route('/api/get_password', methods=["post"])
-def index_get():
-    data = json.loads(request.data)
-    # name
+def deal_data(data: dict) -> tuple:
+    """
+    预处理输入数据，方便后续生成密码
+    :param data: 包含各项信息的字典
+    :return: 处理过后的多个列表，包括姓名、生日、邮件、电话、身份证、工号、其他、常用词组等,具体:
+    name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common
+    """
+    # name，姓名的各种情况
     first_name = data.get('first_name', '')
     first_name_combine = get_repeat(get_low_and_up_str([first_name])) if re.match('^[a-zA-Z0-9]+$', first_name) else ['']
     last_name = [data.get('second_name', ''), data.get('third_name', '')]
@@ -106,10 +103,8 @@ def index_get():
     name_combine = (first_name_combine[0], last_name_combine[0])
     name_all = [''.join(name_combine), ''.join(name_combine[::-1])]
     last_name_a_b = last_name[0][0:1] + last_name[1][0:1]
-    for i in [first_name[0:1] + last_name_a_b, first_name_combine[0] + last_name_a_b, last_name_a_b + first_name[0:1],
-              last_name_a_b + first_name_combine[0], first_name[0:1] + ''.join(last_name), ''.join(last_name),
-              first_name]:
-        name_all += [i]
+    name_all.extend([first_name[0:1] + last_name_a_b, first_name_combine[0] + last_name_a_b, last_name_a_b + first_name[0:1],
+              last_name_a_b + first_name_combine[0], first_name[0:1] + ''.join(last_name), ''.join(last_name), first_name])
     # birthday
     birthday, birthday2, birthday_all = data.get('birthday', ''), data.get('birthday2', ''), []
     for i in [birthday, birthday2]:
@@ -118,65 +113,60 @@ def index_get():
             birthday_all += [i] + get_head_tail(i, 4)
             if i[4] == '0':
                 birthday_all += [i[-3:], i[-3:] * 2]
-    # email
+    # email，邮件的各种情况
     email, email_all = data.get('email', ''), []
     if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email):
         email_all.append(email.split('@')[0])
         email_all += get_repeat(get_head_tail(email.split('@')[0], 3, 4))
-    # phone
+    # phone，电话
     telephone = data.get('telephone', '')
     mobile = data.get('mobile', '')
     phone_all = []
     for i in [telephone, mobile]:
         if re.match('^[0-9-]+$', i):
-            phone_all += i.split('-') + [''.join(i.split('-')), i]
-            phone_all += get_repeat(get_head_tail(i, 3, 4, 5, 6))
-    # other
+            phone_all += (i.split('-') + [''.join(i.split('-')), i]) if i.find('-') > -1 else [i]
+            phone_all += get_repeat(get_head_tail(i, 3, 4, 5, 6))  # 没有去掉-号，暂时不考虑这种情况
+    # other，其他
     user_name = data.get('user_name', '')
     account = data.get('account', '')
     qq = data.get('qq', '') if re.match('^[0-9]{5,13}$', data.get('qq', '')) else ''
     organization = data.get('organization', '') if re.match('^[0-9a-zA-Z@./ -]+$', data.get('organization', '')) else ''
     company = data.get('company', '') if re.match('^[0-9a-zA-Z@./ -]+$', data.get('company', '')) else ''
-    # password = data.get('password', '')
-    # password1=data.get('password1', '')
-    # password2 = data.get('password2', '')
     like_use = data.get('like_use', '')
     other = data.get('other', '')
     other_all = [user_name, account, qq, organization, company, like_use, other]
     other_all += [j for i in other_all for j in get_repeat(get_head_tail(i, 3, 4))]
-    # id_card
-    id_card = data.get('id_card', '') if re.match(r'(^\d{15}$)|(^\d{17}(x|X|\d)$|^$)', data.get('id_card', '')) else ''
-    id_card_all = [] if len(id_card) != 18 else distinct_list(get_repeat(get_head_tail(id_card, 3, 4, 6, 8)) +
-                                                              get_repeat(get_head_tail(id_card[:-1], 3, 4, 6, 8)))
-    # work_no
+    # id_card，身份证号
+    id_card = data.get('id_card', '') if re.match(r'^\d{17}(x|X|\d)$', data.get('id_card', '')) else ''
+    id_card_all = [] if len(id_card) != 18 else distinct_list(get_repeat(get_head_tail(id_card, 3, 4, 6, 8) + get_head_tail(id_card[:-1], 3, 4, 6, 8)))
+    # work_no，工号
     work_no = data.get('work_no', '') if re.match('^[0-9a-zA-Z@./ -]+$', data.get('work_no', '')) else ''
     work_no_all = get_repeat(get_head_tail(work_no, 3, 4, 6, 8))
-    # second person
-    # metaFirstName = data.get('firstName2', '')
-    # mateLastName = [data.get('secondName2', ''), data.get('thirdName2', '')]
-    # metaBirthday = data.get('birthday3', '')
-    # metaBirthday2 = data.get('birthday4', '')
-    connector = data.get('connector', '')
-    # common = list(map(str, range(10))) + ['a', 'z', 'q'] + ['11', '12', '01', 'qq', 'aa', 'zz', '00', '66', '88',
-    # '99','ab', 'zx', 'az', 'qw', 'qa'] + ['123', '888', '666', '000', '111', 'aaa', 'abc', 'qaz', 'qwe', 'asd', 'zxc']
-    #  + ['1234','1qaz','qwer','asdf','zxcv','1357','2468','0123','6789']+['12345','123456']
+    # common，常用词组
     common = data.get('common', '').split(',')
     if data.get('have_year', ''):
-        year = int(time.strftime("%Y"))
-        common += list(map(str, range(year-int(data.get('year', '1')), year + 2)))
-    # generate password
-    name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common = \
-        [distinct_list(i) for i in
-         [name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common]]
-    pass_list_all = [name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common]
+        year_now = int(time.strftime("%Y"))
+        year = int(data.get('year', '1'))
+        common += [str(i) for i in range(year_now - year, year_now + year)]
+    return name_all, birthday_all, email_all, phone_all, id_card_all, work_no_all, other_all, common
+
+
+# SPA，单页面应用
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
+
+
+@app.route('/api/get_password', methods=["post"])
+def index_get():
+    data = json.loads(request.data)
+    connector = data.get('connector', '')
+    pass_list_all = [distinct_list(i) for i in deal_data(data)]
+    # 开始生成密码
     pass_first = list(itertools.chain(*pass_list_all))
-    # print(pass_list_all)
-    number_filter = data.get('number_filter', '')
-    string_filter = data.get('string_filter', '')
-    short_filter = data.get('short_filter', '')
-    long_filter = data.get('long_filter', '')
-    short = data.get('short', '')
-    long = data.get('long', '')
+    filter_list = ["number_filter", "string_filter", "short_filter", "long_filter", "short", "long"]
+    number_filter, string_filter, short_filter, long_filter, short, long = [data.get(i, '') for i in filter_list]
     # 开始生成二阶和三阶密码
     pass_second, pass_third = [], []
     for i, j in enumerate(pass_list_all):
@@ -186,18 +176,17 @@ def index_get():
             pass_second += [''.join(m) for m in itertools.product(j, k)]
             if connector:
                 pass_third += [''.join(m) for m in itertools.product(j, connector, k)]
-    pass_second += [''.join(m) for m in itertools.product(other_all, other_all)]
-    # 过滤长度和纯字符、纯数字
-    short = int(short) if short_filter and int(short) > 0 else 3    # 最小长度
-    long = int(long) if long_filter and int(long) > 0 else 32    # 最大长度
-    pass_first, pass_second, pass_third = [drop_short_long(distinct_list(get_capitalize(i)), start=short, end=long)
-                                           for i in [pass_first, pass_second, pass_third]]
+    pass_second += [''.join(m) for m in itertools.product(pass_list_all[6], pass_list_all[6])]  # other特殊处理
+    # 过滤长度和纯字符、纯数字，首字母大写，去重
+    short = int(short) if short_filter and int(short) > 0 else 3  # 最小长度
+    long = int(long) if long_filter and int(long) > 0 else 32  # 最大长度
+    pass_list = [pass_first, pass_second, pass_third]
+    pass_list = [drop_short_long(distinct_list(get_capitalize(i)), start=short, end=long) for i in pass_list]
     if number_filter:
-        pass_first, pass_second, pass_third = [drop_sting_int(i, 'int') for i in [pass_first, pass_second, pass_third]]
+        pass_list = [drop_sting_int(i, 'int') for i in pass_list]
     if string_filter:
-        pass_first, pass_second, pass_third = [drop_sting_int(i, 'str') for i in [pass_first, pass_second, pass_third]]
-    return jsonify({"pass_first": '\n'.join(pass_first), "pass_second": '\n'.join(pass_second),
-                    "pass_third": '\n'.join(pass_third)})
+        pass_list = [drop_sting_int(i, 'str') for i in pass_list]
+    return jsonify({"pass_first": '\n'.join(pass_list[0]), "pass_second": '\n'.join(pass_list[1]), "pass_third": '\n'.join(pass_list[2])})
 
 
 @app.route('/api/get_common', methods=['post'])
@@ -219,7 +208,10 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-# TODO:网址
-# TODO:旧密码
-# TODO:第二人名字
-
+#  TODO: UPDATE1-网址、旧密码、第二人名字等
+#  DONE: BUGFIX1-全部密码合并时没有换行，如20191105ab12345，应该分为两个密码
+#  DONE: BUGFIX2-没有输入日期时前端报错
+#  TODO: BUGFIX3-数据量过大时内存溢出，暂未查出原因，怀疑不是代码问题
+#  DONE: UPDATE2-readme添加预览图
+#  DONE: UPDATE3-去掉默认连接符
+#  DONE: BUGFIX4-重置按钮无效

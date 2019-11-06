@@ -8,7 +8,6 @@
             <Col span="3" offset="1"><PasswordArea :password="password3" desc="三阶密码"></PasswordArea></Col>
             <Col span="3" offset="1"><PasswordArea :password="password4" desc="全部密码"></PasswordArea></Col>
         </Row>
-        <!--<Spin size="large" fix v-if="spinShow"></Spin>-->
     </div>
 </template>
 
@@ -24,7 +23,6 @@
         },
         data(){
             return{
-                // spinShow:false,
                 password1:'',
                 password2:'',
                 password3:''
@@ -32,25 +30,22 @@
         },
         computed: {
             password4: function () {
-                return this.password1.concat(this.password2).concat(this.password3)
+                return this.password1+(this.password2?'\n'+this.password2:'')+(this.password3?'\n'+this.password3:'')
             }
         },
         methods:{
             get_data:function (data){
-                // this.spinShow=true
                 this.$Spin.show();
                 this.$http.post('/api/get_password', data).then(response=> {
                     this.password1=response.data['pass_first'];
                     this.password2=response.data['pass_second'];
                     this.password3=response.data['pass_third'];
-                    // this.spinShow=false;
                     this.$Spin.hide();
                 }).catch(error=> {
                     this.password1='';
                     this.password2='';
                     this.password3='';
                     console.log(error);
-                    // this.spinShow=false
                     this.$Spin.hide();
                 });
             }

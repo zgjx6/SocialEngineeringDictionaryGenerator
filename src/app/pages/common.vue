@@ -44,16 +44,6 @@
         methods: {
             getCommon: function (data) {
                 this.spinShow = true;
-/*                this.$http.get('/static/file/NCSC_PwnedPasswordTop100k.txt').then(response => {
-                    this.password100 = response.data;
-                    this.password1700 = response.data;
-                    this.password10000 = response.data;
-                    this.NCSC100k = response.data;
-                    this.spinShow = false;
-                }).catch(error => {
-                    console.log(error);
-                    this.spinShow = false
-                });*/
                 this.$http.post('/api/get_common', data).then(response => {
                     this.password100 = response.data['content100'];
                     this.password1700 = response.data['content1700'];

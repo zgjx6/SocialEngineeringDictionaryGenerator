@@ -12,16 +12,6 @@
         <MenuItem name="3">
             <router-link to="/readme"><Icon type="ios-paperplane"></Icon>说明</router-link>
         </MenuItem>
-        <!--<MenuItem name="3">-->
-            <!--<a href="https://github.com/zgjx/SocialEngineeringDictionaryGenerator/blob/master/README.md" target="_blank">-->
-                <!--<Icon type="help-circled"></Icon>帮助-->
-            <!--</a>-->
-        <!--</MenuItem>-->
-        <!--<MenuItem name="4">-->
-            <!--<a href="https://github.com/zgjx/SocialEngineeringDictionaryGenerator/" target="_blank">-->
-                <!--<Icon type="information-circled"></Icon>社会工程学密码生成器-->
-            <!--</a>-->
-        <!--</MenuItem>-->
     </Menu>
 </template>
 <script>

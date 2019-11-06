@@ -149,7 +149,7 @@
         </FormItem>
         <FormItem>
             <Button type="primary" @click="emit_data">生成密码</Button>
-            <Button type="ghost">重置</Button>
+            <Button type="ghost" @click="reset">重置</Button>
         </FormItem>
     </Form>
 </template>
@@ -158,7 +158,7 @@
         name: 'query',
         data() {
             return {
-                form_item: {
+                form_item_origin: {
                     first_name: '',
                     second_name: '',
                     third_name: '',
@@ -172,17 +172,10 @@
                     qq: '',
                     organization: '',
                     company: '',
-                    // password: '',
-                    // password2: '',
                     like_use: '',
                     id_card: '',
                     work_no: '',
-                    // first_name2: '',
-                    // second_name2: '',
-                    // third_name2: '',
-                    // birthday3:$('#birthday3').val(),
-                    // birthday4:$('#birthday4').val(),
-                    connector: '.!_-#@:$&*~?%+=/|',
+                    connector: '',
                     common:'0,1,2,3,4,5,6,7,8,9,a,z,q,11,12,01,qq,aa,zz,00,66,88,99,ab,zx,az,qw,qa,123,888,666,000,111,aaa,abc,qaz,qwe,asd,zxc,1234,1qaz,qwer,asdf,zxcv,1357,2468,0123,6789,12345,123456',
                     number_filter: false,
                     string_filter: false,
@@ -193,6 +186,7 @@
                     have_year: true,
                     year: '10'
                 },
+                form_item: {},
                 title: {
                     "first_name": "请输入姓(英文)",
                     "second_name": "请输入名的第一个字(英文)",
@@ -210,13 +204,16 @@
                     "like_use": "请输入常用短语(英文),如iloveyou",
                     "id_card": "请输入身份证号",
                     "work_no": "请输入工号",
-                    "connector": "请输入连接符,尽量减少,否则会极大增加密码数量",
+                    "connector": "请输入连接符(如.!_-#@:$&*~?%+=/|),尽量减少,否则会极大增加密码数量",
                     "common": "请输入常用词组,如123456,abcd等，多个用逗号分隔。",
                     "year": "最近几年的年份",
                     "short": "请输入最小长度",
                     "long": "请输入最大长度"
                 }
             }
+        },
+        mounted: function () {
+            this.reset();
         },
         methods: {
             emit_data: function () {
@@ -225,10 +222,13 @@
                 this.$emit('get_data', this.form_item);
             },
             format: function (date) {
-                if (!/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)){
+                if (/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)){
                     return date.getFullYear() + "-" + ((date.getMonth() + 1) < 10 ? "0" : "") + (date.getMonth() + 1) + "-" + (date.getDate() < 10 ? "0" : "") + date.getDate();
                 }
                 return date
+            },
+            reset: function () {
+                this.form_item = Object.assign({}, this.form_item_origin);
             }
         }
     }
