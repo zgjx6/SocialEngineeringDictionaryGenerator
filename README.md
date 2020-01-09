@@ -45,6 +45,11 @@ src目录为前端源码，build目录为编译后的前端代码，如需修改
 3. 执行`npm run build`重新打包。另外，在开发过程中执行`npm run watch`可实时编译。
 
 
+## 从docker启动
+
+如果不从python启动, 也可以使用docker.  
+安装好docker及docker-compose后, 在build目录中执行`docker-compose up -d`, 然后访问`127.0.0.1`即可。  
+
 ## 开源协议
 
 [MIT License.](https://opensource.org/licenses/MIT)

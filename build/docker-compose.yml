@@ -1,0 +1,21 @@
+version: '3'
+services:
+  flask:
+    build: ./
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+    volumes:
+      - "./:/opt"
+  nginx:
+      image: "nginx:stable"
+      links:
+        - flask
+      volumes:
+        - "./logs:/var/log/nginx"
+        - "./:/usr/share/nginx/html"
+        - "./nginx.conf:/etc/nginx/nginx.conf"
+      ports:
+        - "80:80"
+      restart: always
