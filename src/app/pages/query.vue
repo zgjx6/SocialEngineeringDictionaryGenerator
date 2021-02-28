@@ -222,7 +222,7 @@
                 this.$emit('get_data', this.form_item);
             },
             format: function (date) {
-                if (!/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)){
+                if (/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)){
                     return date.getFullYear() + "-" + ((date.getMonth() + 1) < 10 ? "0" : "") + (date.getMonth() + 1) + "-" + (date.getDate() < 10 ? "0" : "") + date.getDate();
                 }
                 return date
