@@ -1,5 +1,1 @@
 .idea
-node_modules
-logs
-__pycache__
-package-lock.json
