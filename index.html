@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>社会工程学密码生成器</title>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            padding-bottom: 24px;
+        }
         label {
             width: 100px;
             display: inline-block;
@@ -304,10 +311,44 @@
 
         function main() {
             show_loading();
-            setTimeout(generate, 0);
+            setTimeout(() => {
+                const start_time = new Date().getTime();
+                const pass_list = generate()
+
+                pass_first_text.value=pass_list[0].join('\n');
+                pass_first_text.rows=pass_list[0].length;
+                pass_first_length.innerText=pass_list[0].length;
+                pass_second_text.value=pass_list[1].join('\n');
+                pass_second_text.rows=pass_list[1].length;
+                pass_second_length.innerText=pass_list[1].length;
+                pass_third_text.value=pass_list[2].join('\n');
+                pass_third_text.rows=pass_list[2].length;
+                pass_third_length.innerText=pass_list[2].length;
+                result.style.display='flex';
+
+                const end_time = new Date().getTime();
+                console.log(`cost ${end_time - start_time}ms`)
+
+                hide_loading();
+            }, 0);
         }
+
+        function download() {
+            const list = generate().flat()
+            console.log(list.length)
+
+            const ele = document.createElement('a');
+            ele.download = "passwords.txt";
+            ele.style.display = "none";
+
+            const blob = new Blob([list.join("\n")]);
+            ele.href = URL.createObjectURL(blob);
+            document.body.appendChild(ele);
+            ele.click();
+            document.body.removeChild(ele);
+        }
+
         function generate() {
-            const start_time = new Date().getTime();
             const first_name = document.getElementById('first_name')['value'];
             const second_name = document.getElementById('second_name')['value'];
             const third_name = document.getElementById('third_name')['value'];
@@ -429,19 +470,8 @@
             if (uppercase) {
                 pass_list = pass_list.map(i => get_upper(i));
             }
-            pass_first_text.value=pass_list[0].join('\n');
-            pass_first_text.rows=pass_list[0].length;
-            pass_first_length.innerText=pass_list[0].length;
-            pass_second_text.value=pass_list[1].join('\n');
-            pass_second_text.rows=pass_list[1].length;
-            pass_second_length.innerText=pass_list[1].length;
-            pass_third_text.value=pass_list[2].join('\n');
-            pass_third_text.rows=pass_list[2].length;
-            pass_third_length.innerText=pass_list[2].length;
-            result.style.display='flex';
-            const end_time = new Date().getTime();
-            console.log(`cost ${end_time - start_time}ms`)
-            hide_loading();
+
+            return [pass_first, pass_second, pass_third]
         }
 
         function copy(cid) {
@@ -547,6 +577,7 @@
 <div style="margin: 20px 0 0 50px;">
     <label for="generate"></label><input type="button" name="generate" id="generate" value="生成密码" onclick="main()" />
     <label for="reset"></label><input type="button" name="reset" id="reset" value="重置" onclick="reset()"/>
+    <label for="download"></label><input type="button" name="download" id="download" value="下载" onclick="download()"/>
 </div>
 <div style="margin-top: 50px;display: none;" id="result">
     <div style="width: 350px;text-align: center;">
