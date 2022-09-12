@@ -130,17 +130,36 @@
         }
         .nav-item {
             height: 100%;
-            display: flex;
-            align-items: center;
             cursor: pointer;
+            z-index: 1;
+        }
+        .nav-item>:first-child {
+            line-height: 50px;
             padding: 0 15px;
         }
-        .nav-item a{
+        .nav-item a {
+            text-align: center;
             color: unset;
             text-decoration: unset;
         }
-        .nav-item:hover {
+        .nav-item:hover, .nav-item .nav-item-box li:hover {
             background-color: #57a3f3;
+        }
+        .nav-item .nav-item-box {
+            max-height: 0;
+            transition: max-height 0.5s;
+            overflow: hidden;
+        }
+        .nav-item:hover .nav-item-box {
+           max-height: 2000px;
+        }
+        .nav-item .nav-item-box ul {
+            background-color: #495060;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-item .nav-item-box li {
+            padding: 5px;
         }
     </style>
     <script>
@@ -500,12 +519,29 @@
     </script>
 </head>
 <body>
-<div style="color: white;background-color: #495060;height: 50px;display: flex;justify-content: space-between;">
-    <div style="display: flex;align-items: center;margin-left: 40px;height: 100%;">
+<div style="color: white;background-color: #495060;height: 50px;display: flex;justify-content: space-between;align-items: center;">
+    <div style="display: flex;margin-left: 40px;height: 100%;">
         <div class="nav-item" style="background-color: #57a3f3;"><a href="/">首页</a></div>
         <div class="nav-item"><a href="https://github.com/zgjx6/SocialEngineeringDictionaryGenerator" target="_blank">GITHUB</a></div>
+        <div class="nav-item">
+            <div>链接</div>
+            <div class="nav-item-box">
+                <ul>
+                    <li title="https://github.com/r35tart/RW_Password"><a href="https://github.com/r35tart/RW_Password" target="_blank">RW_Password</a></li>
+                    <li title="https://github.com/danielmiessler/SecLists"><a href="https://github.com/danielmiessler/SecLists" target="_blank">SecLists</a></li>
+                    <li title="https://github.com/rootphantomer/Blasting_dictionary"><a href="https://github.com/rootphantomer/Blasting_dictionary" target="_blank">Blasting_dictionary</a></li>
+                    <li title="https://github.com/epony4c/Exploit-Dictionary"><a href="https://github.com/epony4c/Exploit-Dictionary" target="_blank">Exploit-Dictionary</a></li>
+                    <li title="https://github.com/Stardustsky/SaiDict"><a href="https://github.com/Stardustsky/SaiDict" target="_blank">SaiDict</a></li>
+                    <li title="https://github.com/fuzz-security/SuperWordlist"><a href="https://github.com/fuzz-security/SuperWordlist" target="_blank">SuperWordlist</a></li>
+                    <li title="https://github.com/RicterZ/genpAss/tree/master"><a href="https://github.com/RicterZ/genpAss/tree/master" target="_blank">genpAss</a></li>
+                    <li title="https://github.com/tennc/fuzzdb"><a href="https://github.com/tennc/fuzzdb" target="_blank">tennc-fuzzdb</a></li>
+                    <li title="https://github.com/fuzzdb-project/fuzzdb"><a href="https://github.com/fuzzdb-project/fuzzdb" target="_blank">FuzzDB</a></li>
+                    <li title="https://github.com/TheKingOfDuck/fuzzDicts"><a href="https://github.com/TheKingOfDuck/fuzzDicts" target="_blank">fuzzDicts</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="nav-item" style="margin-right: 10px;padding: 0 10px;">V1.1.0</div>
+    <div class="nav-item" style="margin-right: 10px;padding: 0 10px;display: flex;align-items: center;">V1.2.0</div>
 </div>
 
 <div class="alert-info">
