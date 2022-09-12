@@ -6,8 +6,6 @@
 
 所有代码均开源于[Github](https://github.com/zgjx6/SocialEngineeringDictionaryGenerator), 功能均使用原生js实现, 不会访问任何外部资源, 可以尝试使用自己的信息测试效果, 配合常用的弱密码效果更佳，如有问题请[提交issue](https://github.com/zgjx6/SocialEngineeringDictionaryGenerator/issues)。
 
-最后再附一个发现的同一个类型的网站 [http://www.bugku.com/mima](http://www.bugku.com/mima/), 以及[密码字典](https://github.com/r35tart/RW_Password)、[爆破字典](https://github.com/rootphantomer/Blasting_dictionary)。
-
 ![预览图](preview.jpg)
 
 ## 使用
