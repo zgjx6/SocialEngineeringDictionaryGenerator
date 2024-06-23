@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>社会工程学密码生成器</title>
+    <link href="data:image/x-icon;base64,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HMPs4JAtLTGN5v0dr+NJhaEIdtA2CGBY6vt44ugjbWfkO1vIIZYopFakUWRBWs90ApD0lYgnjiH3kf/rh9N5Q+2EUJKM03nDffT4AIAhqVviiYODz/cp2jta1U4LJcm0d7TC5/sU0svCE/LnaCV7328WxsSUTMDv95G97zcDiPmjT0QcY9zFzv/F2Y7P1E4TJUmcO/85d7HzCICYZopEPcFasePXf4DHo97Z2ZTk4PE48Pp/HkacWgNIXBwjGBo+jN9/uF/ttFEU0nToAIaGDwO4HO/WqfiQHsOud3ei/VyL2umjyORsRwve2rMTwLFEbp+qg/EpvPTyAfQNnFU7nZQp0jdwFtv+7QCAU4kGmao4LsPl2oWfbtuDAdt5tdNLSZCBwQ78dNseuFy7AFxKNBjhYmzzSKQtkdUwGh7EC898HTVLVqmddkoM2s+1YNu//h5uz24AF6PdIqUBueIAgFkAVmDL5oex4Wv3wGgwq50PFBFujwNN/3MAb7+zE8BJxOiApkIcAdbCOns9vvfdv8SSxStS4hhESRy/34dzHSex49d/gG34EICj8YKkUhxAoBZZMG8dNm9qRM3iW5GVJe+QEoo8nM4xtHe04d33mtHZfQRxagsxqRZHgDwAK8Cya3DH6jmoq12AcqsV+fnFyDbnQqczgBBasyiB43zwej2wO8Zw/foVDNhsaD3dieOfDsLn+wS8KKY0UZoucQSDArACqAJQBqAQQC4AA9Renzv98YN37RsDcA38rGoPABsgb6sTWeKgzGzor5giCRUHRRIqDookVBwUSag4KJL8Pw8i7xKpkJX2AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE2LTA5LTE3VDE1OjE4OjUzKzA4OjAwQlFa4wAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMy0wNC0yMVQyMzoxNjoyMiswODowMCFaf9gAAABNdEVYdHNvZnR3YXJlAEltYWdlTWFnaWNrIDcuMC4xLTYgUTE2IHg4Nl82NCAyMDE2LTA5LTE3IGh0dHA6Ly93d3cuaW1hZ2VtYWdpY2sub3Jn3dmlTgAAABh0RVh0VGh1bWI6OkRvY3VtZW50OjpQYWdlcwAxp/+7LwAAABh0RVh0VGh1bWI6OkltYWdlOjpIZWlnaHQAMTM1JNYMfAAAABd0RVh0VGh1bWI6OkltYWdlOjpXaWR0aAAxMzW3J1whAAAAGXRFWHRUaHVtYjo6TWltZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0VGh1bWI6Ok1UaW1lADEzNjY1NTczODLMTHWWAAAAEnRFWHRUaHVtYjo6U2l6ZQA3LjQ1S0KAyO1GAAAAX3RFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vaG9tZS93d3dyb290L3NpdGUvd3d3LmVhc3lpY29uLm5ldC9jZG4taW1nLmVhc3lpY29uLmNuL3NyYy8xMTA3My8xMTA3Mzk5LnBuZwPd1RIAAAAASUVORK5CYII="
+          rel="shortcut icon"
+          type="image/x-icon">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+<div style="color: white;background-color: #495060;height: 50px;display: flex;justify-content: space-between;align-items: center;">
+    <div style="display: flex;margin-left: 40px;height: 100%;">
+        <div class="nav-item" style="background-color: #57a3f3;"><a href="/">首页</a></div>
+        <div class="nav-item"><a href="https://github.com/zgjx6/SocialEngineeringDictionaryGenerator" target="_blank">GITHUB</a>
+        </div>
+        <div class="nav-item">
+            <div>链接</div>
+            <div class="nav-item-box">
+                <ul>
+                    <li title="https://github.com/r35tart/RW_Password"><a href="https://github.com/r35tart/RW_Password"
+                                                                          target="_blank">RW_Password</a></li>
+                    <li title="https://github.com/danielmiessler/SecLists"><a
+                            href="https://github.com/danielmiessler/SecLists" target="_blank">SecLists</a></li>
+                    <li title="https://github.com/rootphantomer/Blasting_dictionary"><a
+                            href="https://github.com/rootphantomer/Blasting_dictionary" target="_blank">Blasting_dictionary</a>
+                    </li>
+                    <li title="https://github.com/epony4c/Exploit-Dictionary"><a
+                            href="https://github.com/epony4c/Exploit-Dictionary" target="_blank">Exploit-Dictionary</a>
+                    </li>
+                    <li title="https://github.com/Stardustsky/SaiDict"><a href="https://github.com/Stardustsky/SaiDict"
+                                                                          target="_blank">SaiDict</a></li>
+                    <li title="https://github.com/fuzz-security/SuperWordlist"><a
+                            href="https://github.com/fuzz-security/SuperWordlist" target="_blank">SuperWordlist</a></li>
+                    <li title="https://github.com/RicterZ/genpAss/tree/master"><a
+                            href="https://github.com/RicterZ/genpAss/tree/master" target="_blank">genpAss</a></li>
+                    <li title="https://github.com/tennc/fuzzdb"><a href="https://github.com/tennc/fuzzdb"
+                                                                   target="_blank">tennc-fuzzdb</a></li>
+                    <li title="https://github.com/fuzzdb-project/fuzzdb"><a
+                            href="https://github.com/fuzzdb-project/fuzzdb" target="_blank">FuzzDB</a></li>
+                    <li title="https://github.com/TheKingOfDuck/fuzzDicts"><a
+                            href="https://github.com/TheKingOfDuck/fuzzDicts" target="_blank">fuzzDicts</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="nav-item" style="margin-right: 10px;padding: 0 10px;display: flex;align-items: center;">V1.2.0</div>
+</div>
+
+<div class="alert-info">
+    <svg class="alert-icon" fill="none" stroke="currentColor" stroke-linecap="butt" stroke-linejoin="miter"
+         stroke-width="4" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20Zm2-30a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2Zm0 17h1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h1v-8a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v11Z"
+              fill="currentColor"
+              fill-rule="evenodd" stroke="none"></path>
+    </svg>
+    <span>所有输入框均是选填, 尽量减少无效输入以避免生成结果过多</span>
+</div>
+
+<div class="alert-info">
+    <svg class="alert-icon" fill="none" stroke="currentColor" stroke-linecap="butt" stroke-linejoin="miter"
+         stroke-width="4" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20Zm2-30a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2Zm0 17h1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h1v-8a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v11Z"
+              fill="currentColor"
+              fill-rule="evenodd" stroke="none"></path>
+    </svg>
+    <span>所有代码均开源, 功能均使用原生js实现, 不会访问任何外部资源, 可以尝试使用自己的信息测试, 如有问题请<a
+            href="https://github.com/zgjx6/SocialEngineeringDictionaryGenerator/issues">提交issue</a></span>
+</div>
+
+<div>
+    <label for="first_name">姓名</label><input id="first_name" name="first_name" placeholder="请输入姓(英文)"
+                                               title="请输入姓(英文)" type="text"/>
+    <label for="second_name"></label><input id="second_name" name="second_name" placeholder="请输入名的第一个字(英文)"
+                                            title="请输入名的第一个字(英文)" type="text"/>
+    <label for="third_name"></label><input id="third_name" name="third_name" placeholder="请输入名的第二个字(如果有，英文)"
+                                           title="请输入名的第二个字(如果有，英文)"
+                                           type="text"/>
+</div>
+<div>
+    <label for="birthday">生日</label><input id="birthday" name="birthday" placeholder="公历生日" title="公历生日"
+                                             type="date"/>
+    <label for="birthday2"></label><input id="birthday2" name="birthday2" placeholder="农历生日" title="农历生日"
+                                          type="date"/>
+</div>
+<div>
+    <label for="email">邮件</label><input id="email" name="email" placeholder="请输入邮箱" title="请输入邮箱"
+                                          type="email"/>
+</div>
+<div>
+    <label for="mobile">电话</label><input id="mobile" name="mobile" placeholder="请输入座机号,不要-号" title="请输入座机号,不要-号"
+                                           type="tel"/>
+    <label for="telephone"></label><input id="telephone" name="telephone" placeholder="请输入手机号" title="请输入手机号"
+                                          type="tel"/>
+</div>
+<div>
+    <label for="username">用户名</label><input id="username" name="username" placeholder="请输入用户名(英文)"
+                                               title="请输入用户名(英文)" type="text"/>
+    <label for="account"></label><input id="account" name="account" placeholder="请输入用户账号" title="请输入用户账号"
+                                        type="text"/>
+</div>
+<div>
+    <label for="organization">组织</label><input id="organization" name="organization" placeholder="请输入组织名(英文)"
+                                                 title="请输入组织名(英文)" type="text"/>
+    <label for="company"></label><input id="company" name="company" placeholder="请输入公司名(英文)" title="请输入公司名(英文)"
+                                        type="text"/>
+</div>
+<div>
+    <label for="like_use">短语</label><input id="like_use" name="like_use" placeholder="请输入常用短语(英文),如iloveyou,多个用逗号分隔" style="width: 320px;"
+                                             title="请输入常用短语(英文),如iloveyou,多个用逗号分隔"
+                                             type="text"/>
+</div>
+<div>
+    <label for="id_card">身份证号</label><input id="id_card" name="id_card" placeholder="请输入身份证号" title="请输入身份证号"
+                                                type="text"/>
+</div>
+<div>
+    <label for="work_no">工号</label><input id="work_no" name="work_no" placeholder="请输入工号" title="请输入工号"
+                                            type="text"/>
+</div>
+<div>
+    <label for="connector">连接符</label>
+    <label for="connector_left" style="width: 30px;padding-right: 5px;">左</label><input id="connector_left"
+                                                                                         name="connector_left"
+                                                                                         type="checkbox"
+                                                                                         value="左"/><label
+        class="switch" for="connector_left"><span class="ball"></span></label>
+    <label for="connector_middle" style="width: 30px;padding-right: 5px;">中</label><input id="connector_middle"
+                                                                                           name="connector_middle"
+                                                                                           type="checkbox"
+                                                                                           value="中"/><label
+        class="switch" for="connector_middle"><span class="ball"></span></label>
+    <label for="connector_right" style="width: 30px;padding-right: 5px;">右</label><input id="connector_right"
+                                                                                          name="connector_right"
+                                                                                          type="checkbox"
+                                                                                          value="右"/><label
+        class="switch" for="connector_right"><span class="ball"></span></label>
+    <input id="connector" name="connector" placeholder="请输入连接符(如.!_-#@:$&*~?%+=/|),尽量减少,否则会极大增加密码数量" style="width: 500px;"
+           title="请输入连接符(如.!_-#@:$&*~?%+=/|),尽量减少,否则会极大增加密码数量"
+           type="text"/>
+    <span style="cursor: help" title="连接符用于连接两条信息. 如姓zhang且生日为0229,用@在中间连接则为zhang@0229"><svg
+            class="alert-icon" fill="none" stroke="currentColor" stroke-linecap="butt" stroke-linejoin="miter"
+            stroke-width="4" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20Zm-3.862-24.021a.461.461 0 0 0 .462-.462 2.37 2.37 0 0 1 .636-1.615C21.64 17.48 22.43 17 23.988 17c1.465 0 2.483.7 3.002 1.493.555.848.446 1.559.182 1.914-.328.444-.736.853-1.228 1.296-.15.135-.335.296-.533.468-.354.308-.75.654-1.067.955C23.22 24.195 22 25.686 22 28v.013a1 1 0 0 0 1.006.993l2.008-.012a.993.993 0 0 0 .986-1c.002-.683.282-1.19 1.101-1.97.276-.262.523-.477.806-.722.21-.18.439-.379.713-.626.57-.513 1.205-1.13 1.767-1.888 1.516-2.047 1.161-4.634-.05-6.485C29.092 14.398 26.825 13 23.988 13c-2.454 0-4.357.794-5.642 2.137-1.25 1.307-1.742 2.954-1.746 4.37 0 .26.21.472.47.472h3.068Zm1.868 14.029a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V32a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v2.008Z"
+                                                                                 fill="currentColor"
+                                                                                 fill-rule="evenodd"
+                                                                                 stroke="none"></path></svg></span>
+</div>
+<div>
+    <label for="common">常用词组</label><input id="common" name="common" placeholder="请输入常用词组,如123456,abcd等，多个用逗号分隔" style="width: 800px;"
+                                               title="请输入常用词组,如123456,abcd等，多个用逗号分隔"
+                                               type="text"
+                                               value="123,888,666,000,111,aaa,abc,qaz,qwe,asd,zxc,!@#,1234,1qaz,qwer,asdf,zxcv,!@#$,1357,2468,0123,6789,6666,8888,12345,123456"/>
+</div>
+<div>
+    <label for="have_year">最近年份</label><input id="have_year" name="have_year" type="checkbox"/><label class="switch"
+                                                                                                          for="have_year"><span
+        class="ball"></span></label>
+    <label for="year" style="display: none"></label><input id="year" name="year" placeholder="最近几年的年份,如果要特定年份可以输入到常用词组中" style="width: 100px;"
+                                                           title="最近几年的年份,如果要特定年份可以输入到常用词组中"
+                                                           type="number"
+                                                           value="10"/>
+</div>
+<div>
+    <label for="number_filter">去掉纯数字</label><input id="number_filter" name="number_filter" type="checkbox"/><label
+        class="switch" for="number_filter"><span class="ball"></span></label>
+</div>
+<div>
+    <label for="string_filter">去掉纯字母</label><input id="string_filter" name="string_filter" type="checkbox"/><label
+        class="switch" for="string_filter"><span class="ball"></span></label>
+</div>
+<div>
+    <label>长度</label>
+    <label for="short" style="width: 80px;padding-right: 5px;">不能小于</label><input id="short" name="short"
+                                                                                      placeholder="请输入最小长度, 0为忽略" style="width: 100px;"
+                                                                                      title="请输入最小长度, 0为忽略"
+                                                                                      type="number"
+                                                                                      value="6"/>
+    <label for="long" style="width: 60px;padding-right: 5px;">不能大于</label><input id="long" name="long" placeholder="请输入最大长度, 0为忽略"
+                                                                                     style="width: 100px;"
+                                                                                     title="请输入最大长度, 0为忽略"
+                                                                                     type="number"
+                                                                                     value="16"/>
+</div>
+<div>
+    <label>大小写</label>
+    <label for="capitalize" style="width: 80px;padding-right: 5px;">首字母大写</label><input checked="checked"
+                                                                                             id="capitalize"
+                                                                                             name="capitalize"
+                                                                                             type="checkbox"
+                                                                                             value="首字母大写"/><label
+        class="switch" for="capitalize"><span class="ball"></span></label>
+    <label for="lowercase" style="width: 50px;padding-right: 5px;">全小写</label><input id="lowercase" name="lowercase"
+                                                                                        type="checkbox"
+                                                                                        value="全小写"/><label
+        class="switch" for="lowercase"><span class="ball"></span></label>
+    <label for="uppercase" style="width: 50px;padding-right: 5px;">全大写</label><input id="uppercase" name="uppercase"
+                                                                                        type="checkbox"
+                                                                                        value="全大写"/><label
+        class="switch" for="uppercase"><span class="ball"></span></label>
+</div>
+<div style="margin: 20px 0 0 50px;">
+    <label for="generate"></label><input id="generate" name="generate" onclick="main()" type="button" value="生成密码"/>
+    <label for="reset"></label><input id="reset" name="reset" onclick="reset()" type="button" value="重置"/>
+    <label for="download"></label><input id="download" name="download" onclick="download()" type="button" value="下载"/>
+</div>
+<div id="result" style="margin-top: 50px;display: none;">
+    <div style="width: 350px;text-align: center;">
+        <div style="margin-bottom: 10px;">
+            <span>单项信息密码-<span id="pass_first_length"></span>个</span>
+            <input id="pass_first_copy" name="pass_first_copy" onclick="copy('pass_first_text')" style="width: 50px;height: 20px;"
+                   type="button" value="复制"/>
+        </div>
+        <label for="pass_first_text" style="display: none"></label><textarea cols="25" id="pass_first_text"></textarea>
+    </div>
+    <div style="width: 350px;text-align: center;">
+        <div style="margin-bottom: 10px;">
+            <span>两项信息密码-<span id="pass_second_length"></span>个</span>
+            <input id="pass_second_copy" name="pass_second_copy" onclick="copy('pass_second_text')" style="width: 50px;height: 20px;"
+                   type="button" value="复制"/>
+        </div>
+        <label for="pass_second_text" style="display: none"></label><textarea cols="25"
+                                                                              id="pass_second_text"></textarea>
+    </div>
+    <div style="width: 350px;text-align: center;">
+        <div style="margin-bottom: 10px;">
+            <span>两项信息加连接符密码-<span id="pass_third_length"></span>个</span>
+            <input id="pass_third_copy" name="pass_third_copy" onclick="copy('pass_third_text')" style="width: 50px;height: 20px;"
+                   type="button" value="复制"/>
+        </div>
+        <label for="pass_third_text" style="display: none"></label><textarea cols="25" id="pass_third_text"></textarea>
+    </div>
+    <div style="width: 350px;text-align: center;">
+        <div style="margin-bottom: 10px;">
+            <span>全部密码-<span id="pass_all_length"></span>个</span>
+            <input id="pass_all_copy" name="pass_all_copy" onclick="copy('pass_all_text')" style="width: 50px;height: 20px;" type="button"
+                   value="复制"/>
+        </div>
+        <label for="pass_all_text" style="display: none"></label><textarea cols="25" id="pass_all_text"></textarea>
+    </div>
+</div>
+<div id="loading" style="display: none;">
+    <div class="loading">
+        <div class="loading-bg"></div>
+    </div>
+</div>
+<div id="notification"
+     style="position: fixed;right: -20px;top: 20px;visibility: hidden;opacity: 0;width: 160px; height: 60px; background-color: white; text-align: center;line-height: 60px;border: 1px solid rgb(229,230,235);border-radius: 4px;box-shadow: 0 4px 10px #0000001a;transition: right 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;">
+    <svg class="alert-icon" fill="none" stroke="currentColor" stroke-linecap="butt" stroke-linejoin="miter"
+         stroke-width="4" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20Zm2-30a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2Zm0 17h1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h1v-8a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v11Z"
+              fill="currentColor"
+              fill-rule="evenodd" stroke="none"></path>
+    </svg>
+    已复制
+</div>
+</body>
+</html>
