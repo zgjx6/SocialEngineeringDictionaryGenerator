@@ -1,0 +1,16 @@
+name: Auto-Deploy-Website
+
+on: [push]
+
+jobs:
+  push_job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: .
